@@ -1,0 +1,50 @@
+.formula {
+    font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+    white-space: pre-wrap;
+
+    .error {
+        color: var(--ion-color-danger);
+    }
+}
+
+.stack {
+
+    ion-item {
+        height: 3rem;
+        transition: 0.1s all linear;
+        
+        ion-icon {
+            cursor: pointer;
+            transition: 0.1s all linear;
+        }
+        
+        ion-note {
+            a {
+                cursor: pointer;
+            }
+        }
+
+        &.terminal ion-icon {
+            cursor: initial;
+        }
+
+        &.hidden {
+            height: 0;
+            overflow: hidden;
+        }
+
+        &.open {
+
+            ion-icon {
+                transform: rotate(90deg);
+            }
+        }
+    }
+
+    .terminal {
+
+        ion-icon {
+            visibility: hidden;
+        }
+    }
+}

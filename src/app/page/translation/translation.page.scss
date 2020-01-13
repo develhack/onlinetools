@@ -1,0 +1,23 @@
+.result {
+    padding: 8px 0;
+    width: 100%;
+    text-align: start;
+    white-space: pre-wrap;
+    user-select: text;
+
+    .suggestion {
+      color: var(--ion-color-primary);
+      cursor: pointer;
+    }
+  
+    .rephrasings {
+      margin-top: .5rem;
+      padding-left: 1rem;
+  
+      .rephrasing {
+        color: var(--ion-color-primary);
+        cursor: pointer;
+      }
+    }
+  }
+  

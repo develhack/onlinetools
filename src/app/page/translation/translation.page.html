@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>翻訳校正</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-segment [(ngModel)]="source" (ionChange)="translate()">
+          <ion-segment-button value="en">English</ion-segment-button>
+          <ion-segment-button value="ja">日本語</ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="stacked">{{ source === 'ja' ? '日本文' : '英文' }}</ion-label>
+          <ion-textarea
+            [(ngModel)]="text"
+            (keydown.control.enter)="translate()"
+            rows="6"
+            autofocus
+          >
+          </ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-end">
+          <ion-button color="primary" (click)="translate()" strong>翻訳・校正</ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="stacked">翻訳文</ion-label>
+          <ion-progress-bar type="indeterminate" *ngIf="processing && !translatedText"></ion-progress-bar>
+          <div class="result">{{translatedText}}</div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="stacked">再翻訳文</ion-label>
+          <ion-progress-bar type="indeterminate" *ngIf="processing && !retranslatedText"></ion-progress-bar>
+          <div class="result">{{retranslatedText}}</div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="stacked">校正文</ion-label>
+          <ion-progress-bar type="indeterminate" *ngIf="processing && !emendationResult"></ion-progress-bar>
+          <div class="result" *ngIf="emendationResult">
+            <ng-template ngFor let-suggestion [ngForOf]="emendationResult.suggestions">
+              <span *ngIf="!suggestion.shouldReplace">{{suggestion.original}}</span>
+              <span *ngIf="suggestion.shouldReplace" class="suggestion" (click)="replace(suggestion.fromIndex, suggestion.toIndex, suggestion.text)">{{suggestion.text}}</span>
+            </ng-template>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="stacked">別表現</ion-label>
+          <ion-progress-bar type="indeterminate" *ngIf="processing && !rephrasingResults.length"></ion-progress-bar>
+          <div class="result" *ngFor="let rephrasingResult of rephrasingResults">
+            {{rephrasingResult.text}}
+            <div class="rephrasings" *ngFor="let rephrasing of rephrasingResult.rephrasings">
+              <div (click)="replace(rephrasingResult.fromIndex, rephrasingResult.toIndex, rephrasing.text)" class="rephrasing">{{rephrasing.text}}</div>
+              <div>{{rephrasing.translated}}</div>
+            </div>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
